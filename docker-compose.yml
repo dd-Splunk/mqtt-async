@@ -2,16 +2,17 @@ version: "3.6"
 
 services:
   so1:
-    networks:
-      splunknet:
+    # networks:
+    #   splunknet:
     image: splunk/splunk:${SPLUNK_IMAGE:-latest}
     container_name: so1
     environment:
       - SPLUNK_START_ARGS=--accept-license
-      - SPLUNK_APPS_URL=https://github.com/dd-Splunk/${SPLUNK_APP}/releases/download/latest/${SPLUNK_APP}.spl,https://splunkbase.splunk.com/app/1924/release/8.0.1/download,https://splunkbase.splunk.com/app/4353/release/1.6.14/download
+      - SPLUNK_APPS_URL=https://splunkbase.splunk.com/app/1924/release/8.0.1/download,https://splunkbase.splunk.com/app/4353/release/1.6.14/download
       - SPLUNKBASE_USERNAME
       - SPLUNKBASE_PASSWORD
       - SPLUNK_PASSWORD
+      - SPLUNK_HEC_TOKEN
       - JAVA_VERSION=openjdk:8
       - TZ=${TZ}
     ports:
@@ -24,12 +25,22 @@ services:
       - so1-etc:/opt/splunk/etc
     restart: always
 
+  mqtt:
+    # networks:
+    #   splunknet:
+    image: emqx:latest
+    ports:
+      - 1883:1883
+      - 18083:18083
 
-networks:
-  splunknet:
-    driver: bridge
-    attachable: true
+# networks:
+#   splunknet:
+#     driver: bridge
+#     attachable: true
 
 volumes:
   so1-var:
   so1-etc:
+  mqtt-config:
+  mqtt-data:
+  mqtt-logs:

@@ -1,3 +1,4 @@
+import logging
 import os
 import random
 import time
@@ -8,10 +9,15 @@ import schedule
 from classes import Broker
 from dotenv import load_dotenv
 
+log_level = logging.DEBUG
+log_format = "%(asctime)s %(levelname)s %(funcName)s %(message)s"
+logging.basicConfig(level=log_level, format=log_format)
+
 load_dotenv()  # take environment variables from .env.
-config_file = os.getenv("CONFIG_FILE")
+config_file = os.getenv("CONFIG_FILE", "mqtt.conf")
 broker = Broker()
-broker.config(config_file)
+
+
 board_id = f"{uuid.getnode():x}"  # get rid of leading 0x
 
 
@@ -22,11 +28,16 @@ def pub(client):
 
     for _sensor_name in _sensors:
         _measure = random.randint(0, 10000) / 100
+        logging.debug(f"Publishing {_sensor_name}:{_measure}")
         client.publish(topic=f"{_sensor_path}{_sensor_name}", payload=_measure, qos=1, retain=False)
 
 
 def conn(client):
-    client.connect(broker.host, broker.port, 60)
+    logging.debug(f"Connecting to {broker.host}:{broker.port}")
+    try:
+        client.connect(broker.host, broker.port, 60)
+    except ConnectionError as _err:
+        logging.error(f"Broker {broker.host}: {_err}")
 
 
 def main():

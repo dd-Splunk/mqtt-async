@@ -18,6 +18,8 @@ def on_connect(client, userdata, flags, rc):
     if rc == 0:
         logging.info(f"Connected to MQTT With Result Code {rc}")
         client.subscribe(broker.topic, qos=1)
+    else:
+        logging.error(f"Connection to broker {broker.host} failed with {rc}")
 
 
 def on_message(client, userdata, message):
@@ -89,7 +91,7 @@ def main():
     global hec_api
 
     load_dotenv()  # take environment variables from .env.
-    config_file = os.getenv("CONFIG_FILE")
+    config_file = os.getenv("CONFIG_FILE", "mqtt.conf")
 
     broker = Broker()
     broker.config(config_file)
