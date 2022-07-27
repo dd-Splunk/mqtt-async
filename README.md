@@ -70,9 +70,11 @@ And [Python code examples](https://www.splunk.com/en_us/blog/customers/http-even
 
 [Docker Mosquitto configuration](https://techoverflow.net/2021/11/25/how-to-setup-standalone-mosquitto-mqtt-broker-using-docker-compose/)
 
-## EMQX ( MQTT Broker) references
+## EMQX ( MQTT Broker ) references
 
-[Docker HUB Image](https://hub.docker.com/_/emqx)
+[EMQX Docker HUB Image](https://hub.docker.com/_/emqx)
+
+[EMQX GitHub repo](https://github.com/emqx/emqx-docker)
 
 ## To Do
 
