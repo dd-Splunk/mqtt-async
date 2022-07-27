@@ -69,3 +69,11 @@ And [Python code examples](https://www.splunk.com/en_us/blog/customers/http-even
 [FIWARE](https://github.com/FIWARE/tutorials.IoT-over-MQTT)
 
 [Docker Mosquitto configuration](https://techoverflow.net/2021/11/25/how-to-setup-standalone-mosquitto-mqtt-broker-using-docker-compose/)
+
+## EMQX ( MQTT Broker) references
+
+[Docker HUB Image](https://hub.docker.com/_/emqx)
+
+## To Do
+
+- [ ] Dockerize the 2 pub / sub python scripts
