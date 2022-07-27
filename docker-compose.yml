@@ -2,12 +2,34 @@ version: "3.6"
 
 services:
   so1:
-    image: ${SPLUNK_IMAGE:-splunk/splunk:latest}
+    networks:
+      splunknet:
+    image: splunk/splunk:${SPLUNK_IMAGE:-latest}
     container_name: so1
     environment:
       - SPLUNK_START_ARGS=--accept-license
-      - SPLUNK_HEC_TOKEN=${SPLUNK_HEC_TOKEN}
-      - SPLUNK_PASSWORD=${SPLUNK_PASSWORD}
+      - SPLUNK_APPS_URL=https://github.com/dd-Splunk/${SPLUNK_APP}/releases/download/latest/${SPLUNK_APP}.spl,https://splunkbase.splunk.com/app/1924/release/8.0.1/download,https://splunkbase.splunk.com/app/4353/release/1.6.14/download
+      - SPLUNKBASE_USERNAME
+      - SPLUNKBASE_PASSWORD
+      - SPLUNK_PASSWORD
+      - JAVA_VERSION=openjdk:8
+      - TZ=${TZ}
     ports:
       - 8000:8000
       - 8088:8088
+      - 8089:8089
+      - 9997:9997
+    volumes:
+      - so1-var:/opt/splunk/var
+      - so1-etc:/opt/splunk/etc
+    restart: always
+
+
+networks:
+  splunknet:
+    driver: bridge
+    attachable: true
+
+volumes:
+  so1-var:
+  so1-etc:
