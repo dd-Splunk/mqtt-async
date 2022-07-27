@@ -1,0 +1,7 @@
+ConfigParser
+dataclasses
+paho-mqtt
+python-dotenv
+requests
+schedule
+types-requests
