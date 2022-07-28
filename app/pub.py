@@ -19,13 +19,14 @@ config_file = os.getenv("CONFIG_FILE", "mqtt.conf")
 broker = Broker()
 broker.config(config_file)
 board_id = f"{uuid.getnode():x}"  # get rid of leading 0x
+sensors = ["air.temperature", "air.humidity", "air.pressure"]
 
 
 def pub(client):
 
     _sensor_number = random.randint(0, 9)
-    _sensor_path = f"Things/{board_id}/dht11-{_sensor_number}/air."
-    _sensors = ["temperature", "humidity", "pressure"]
+    _sensor_path = f"Things/{board_id}/dht11-{_sensor_number}/"
+    _sensors = sensors
 
     logging.info(f"Publishing to {_sensor_path}")
 
@@ -52,7 +53,7 @@ def main():
     schedule.every(10).seconds.do(pub, client)
     while True:
         schedule.run_pending()
-        time.sleep(1)
+        time.sleep(0.1)
 
 
 if __name__ == "__main__":
