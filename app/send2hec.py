@@ -1,6 +1,7 @@
 import logging
 import os
 import sys
+from typing import NewType
 
 import paho.mqtt.client as mqtt
 import requests
@@ -9,14 +10,26 @@ from dotenv import load_dotenv
 from requests.exceptions import ConnectionError, HTTPError
 from requests.packages import urllib3
 
-log_level = logging.DEBUG
+urllib3.disable_warnings()
+
+load_dotenv()  # take environment variables from .env.
+
+log_level = os.environ.get("LOG_LEVEL", "INFO").upper()
 log_format = "%(asctime)s %(levelname)s %(funcName)s %(message)s"
 logging.basicConfig(level=log_level, format=log_format)
+
+config_file = os.getenv("CONFIG_FILE", "mqtt.conf")
+
+broker = Broker()
+broker.config(config_file)
+
+hec_api = HecAPI()
+hec_api.config(config_file)
 
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
-        logging.info(f"Connected to MQTT With Result Code {rc}")
+        logging.debug(f"Connected to MQTT With Result Code {rc}")
         client.subscribe(broker.topic, qos=1)
     else:
         logging.error(f"Connection to broker {broker.host} failed with {rc}")
@@ -26,29 +39,30 @@ def on_message(client, userdata, message):
     hec_post(topic=message.topic, payload=message.payload.decode())
 
 
-Status = bool
+Status = NewType("Status", bool)
+Topic = NewType("Topic", str)
+Payload = NewType("Payload", str)
 
 
-def hec_post(topic, payload) -> Status:
-    """Post received messqage to Splunk
+def hec_post(topic: Topic, payload: Payload) -> Status:
+    """Post received message to Splunk
 
     Transfer the payload received to Splunk using HTTP Event Collector
 
     Args:
-        topic (str): The full topic path subscribed
-        patload (str): the measured value
+        topic (str): The full MQTT topic path subscribed
+        patload (str): The MQTT payload containing the measured value
 
     Returns:
        Status: bool the execution status of the POST
     """
-    urllib3.disable_warnings()
 
-    post_status = False
+    post_status = Status(False)
     metric = Metric(topic, payload)
 
     logging.info(f"Topic: {metric.topic}")
-    logging.info(f"Payload: {metric.payload}")
-    logging.info(f"SourceType: {metric.sourcetype}")
+    logging.debug(f"Payload: {metric.payload}")
+    logging.debug(f"SourceType: {metric.sourcetype}")
 
     try:
         r = requests.post(
@@ -71,41 +85,34 @@ def hec_post(topic, payload) -> Status:
     logging.debug("Successful connection to Splunk")
     # Check Splunk return code
     try:
-        text = r.json()["text"]
         code = r.json()["code"]
-    except Exception as err:
-        logging.error(f"No valid JSON returned from Splunk; {err}")
+        text = r.json()["text"]
+
+    except Exception as _err:
+        logging.error(f"No valid JSON returned from Splunk; {_err}")
         return post_status
 
     if code != 0:
-        raise Exception(f"Splunk error code: {code}")
+        logging.error(f"Splunk error code: {code}")
+        return post_status
     else:
-        logging.info(f"Splunk HEC POST: {text}")
-        post_status = True
+        logging.info(f"Splunk HEC POST result: {text}")
+        post_status = Status(True)
 
     return post_status
 
 
 def main():
-    global broker
-    global hec_api
 
-    load_dotenv()  # take environment variables from .env.
-    config_file = os.getenv("CONFIG_FILE", "mqtt.conf")
-
-    broker = Broker()
-    broker.config(config_file)
-
-    hec_api = HecAPI()
-    hec_api.config(config_file)
-
-    client = mqtt.Client()
+    client = mqtt.Client("Send2HEC")
     client.on_connect = on_connect
     client.on_message = on_message
 
     try:
         logging.debug(f"Connecting to {broker.host}:{broker.port}")
         client.connect(broker.host, broker.port, 60)
+        logging.info(f"Connected to {broker.host}:{broker.port}")
+
     except Exception as _err:
         logging.error(f"Connection to {broker.host}:{broker.port} failed: {_err}")
         sys.exit(1)
