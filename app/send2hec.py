@@ -7,17 +7,15 @@ import paho.mqtt.client as mqtt
 import requests
 from classes import Broker, HecAPI, Metric
 from dotenv import load_dotenv
+from log import set_log
 from requests.exceptions import ConnectionError, HTTPError
 from requests.packages import urllib3
 
 urllib3.disable_warnings()
 
+set_log()
+
 load_dotenv()  # take environment variables from .env.
-
-log_level = os.environ.get("LOG_LEVEL", "INFO").upper()
-log_format = "%(asctime)s %(levelname)s %(funcName)s %(message)s"
-logging.basicConfig(level=log_level, format=log_format)
-
 config_file = os.getenv("CONFIG_FILE", "mqtt.conf")
 
 broker = Broker()

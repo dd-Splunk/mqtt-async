@@ -9,13 +9,11 @@ import paho.mqtt.client as mqtt
 import schedule
 from classes import Broker
 from dotenv import load_dotenv
+from log import set_log
+
+set_log()
 
 load_dotenv()  # take environment variables from .env.
-
-log_level = os.environ.get("LOG_LEVEL", "INFO").upper()
-log_format = "%(asctime)s %(levelname)s %(funcName)s %(message)s"
-logging.basicConfig(level=log_level, format=log_format)
-
 config_file = os.getenv("CONFIG_FILE", "mqtt.conf")
 
 broker = Broker()
