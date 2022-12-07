@@ -79,4 +79,5 @@ An [other example](https://github.com/aSauerwein/splunk-mqtt) based on Go
 
 ## To Do
 
+- [ ] Create a specific Metrics index associated with the Splunk Token
 - [ ] Dockerize the 2 pub / sub python scripts
