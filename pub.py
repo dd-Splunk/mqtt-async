@@ -7,14 +7,15 @@ import uuid
 
 import paho.mqtt.client as mqtt
 import schedule
-from classes import Broker
 from dotenv import load_dotenv
+
+from classes import Broker
 from log import set_log
 
 set_log()
 
 load_dotenv()  # take environment variables from .env.
-config_file = os.getenv("CONFIG_FILE", "mqtt.conf")
+config_file = os.getenv("MQTT_CONFIG_FILE", "mqtt.conf")
 
 broker = Broker()
 broker.config(config_file)

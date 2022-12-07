@@ -5,18 +5,19 @@ from typing import NewType
 
 import paho.mqtt.client as mqtt
 import requests
-from classes import Broker, HecAPI, Metric
 from dotenv import load_dotenv
-from log import set_log
 from requests.exceptions import ConnectionError, HTTPError
 from requests.packages import urllib3
+
+from classes import Broker, HecAPI, Metric
+from log import set_log
 
 urllib3.disable_warnings()
 
 set_log()
 
 load_dotenv()  # take environment variables from .env.
-config_file = os.getenv("CONFIG_FILE", "mqtt.conf")
+config_file = os.getenv("MQTT_CONFIG_FILE", "mqtt.conf")
 
 broker = Broker()
 broker.config(config_file)
