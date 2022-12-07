@@ -59,8 +59,9 @@ pre-commit install
 ## Splunk References
 
 See the Splunk documentation on [Getting metrics from other sources](https://docs.splunk.com/Documentation/Splunk/latest/Metrics/GetMetricsInOther).
-
 And [Python code examples](https://www.splunk.com/en_us/blog/customers/http-event-collect-a-python-class.html)] from Splunk Blogs.
+
+An [other example](https://github.com/aSauerwein/splunk-mqtt) based on Go
 
 ## Mosquitto references
 
