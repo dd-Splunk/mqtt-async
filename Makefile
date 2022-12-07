@@ -4,7 +4,7 @@ C_DIR := $(lastword $(subst /, ,$(CURDIR)))
 
 init:
 	echo "Init Git and Python inside" $(C_DIR)
-	git init
+#	git init
 	python3 -m venv .venv
 	source .venv/bin/activate
 	pip install --upgrade pip
