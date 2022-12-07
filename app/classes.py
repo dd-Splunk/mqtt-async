@@ -1,7 +1,6 @@
-import logging
 import socket
 import time
-from configparser import ConfigParser
+from configparser import ConfigParser, NoSectionError
 from dataclasses import dataclass, field
 
 
@@ -13,15 +12,15 @@ class NetObject:
         """Configure vars from corresponding stanza in config_file"""
 
         _stanza = self.__class__.__name__
-        try:
-            _config = ConfigParser()
-            _config.read(config_file)
 
+        _config = ConfigParser()
+
+        _config.read(config_file)
+        if _config.has_section(_stanza):
             for _var in _config[_stanza]:
                 setattr(self, _var, _config.get(_stanza, _var))
-
-        except Exception as _e:
-            logging.warning(f"file {config_file} error: {_e}")
+        else:
+            raise NoSectionError(f"Stanza {_stanza} not found in config file {config_file}")
 
         # Convert initialized value back to <int> instead of <str>
         _port = int(self.port)
