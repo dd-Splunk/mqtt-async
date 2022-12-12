@@ -1,32 +1,41 @@
-# Overview of custom REST endpoints
+# Hello-world app for custom REST handlers
 
-Custom REST endpoints are user-defined endpoints that let you extend the Splunk platform REST API in your app. You can use the Splunk Enterprise REST API to programmatically interact with Splunk Enterprise using HTTP GET, POST, PUT, and DELETE operations. Create a custom endpoint to introduce additional capabilities into the Splunk Enterprise REST API to meet your specific needs.
+## Overview
 
-## Types of custom REST endpoints
+The hello-world app for Splunk Enterprise contains example custom REST handlers that provide a starting point for app developers.
 
-Here are the two types of custom REST endpoints, along with their associated use cases.
+For more information about creating custom REST handlers in Splunk Enterprise, see [Extend the Splunk Enterprise REST API with custom endpoints](https://dev.splunk.com/enterprise/docs/developapps/customrestendpoints) in the _Splunk Enterprise Developer Guide_.
 
-| Type                                      | Use case                                                                    |
-|-------------------------------------------|-----------------------------------------------------------------------------|
-| Script interface                          | You want to introduce new functionality into your app through the REST API. |
-| Extensible Administration Interface (EAI) | You want to manage your app's custom configuration files.                   |
+## Installation
 
-## Workflow for creating a custom REST endpoint
+Install the hello-world app to run the example custom REST handler scripts in your Splunk Enterprise instance.
+1. Clone this repository onto your local machine.
+2. Copy the `splunk-examples-custom-endpoints-master/hello-world` directory into `$SPLUNK_HOME/etc/apps`.
+3. Restart Splunk Enterprise.
 
-Follow this workflow to create a custom REST endpoint.
+## App contents
 
-1. Write the Python script for your custom REST handler.
-2. Map your custom REST handler to an endpoint.
-3. Expose the endpoint to your app's users.
+The hello-world app for Splunk Enterprise contains the following two example custom REST handlers:
 
-## Custom REST endpoint examples
+| Script             	| Handler type                         	|
+|--------------------	|-------------------------------------------	|
+| `hello_templates.py` 	| Extensible Administration Interface (EAI) 	|
+| `hello_world.py`     	| Script interface                                    	|
 
-This repository contains the following examples to help you get started creating custom REST endpoints.
+When you call the endpoints for these two handlers, they both return the following payload:
 
-| Example     | Description                                                                                                        |
-|-------------|--------------------------------------------------------------------------------------------------------------------|
-| hello-world | This app contains two example custom REST handlers, hello_templates.py (EAI handler) and hello_world.py (script).  |
+```
+{"text":"Hello world!"}
+```
 
-## See also
+To test these custom REST handlers on the backend management port of your Splunk Enterprise installation, go to the following URLs:
+* `hello_templates`- [https://localhost:8089/servicesNS/-/hello-world/hello-templates/say-hello-templates](https://localhost:8089/servicesNS/-/hello-world/hello-templates/say-hello-templates)
+* `hello_world`- [https://localhost:8089/servicesNS/-/hello-world/say-hello](https://localhost:8089/servicesNS/-/hello-world/say-hello)
 
-* [Extend the Splunk platform REST API with custom endpoints](https://dev.splunk.com/enterprise/docs/devtools/customrestendpoints) in the Splunk *Developer Guide*
+## Support
+
+This project is community-supported. Post any questions or comments to this repository.
+
+Discuss custom REST endpoints in the #appdev channel in the splunk-usergroups Slack workspace.
+
+You can also post questions about custom REST endpoints on [Splunk Answers](https://answers.splunk.com/index.html) using the `REST Endpoint Examples` or `restmap.conf` tags.
