@@ -29,8 +29,8 @@ When you call the endpoints for these two handlers, they both return the followi
 ```
 
 To test these custom REST handlers on the backend management port of your Splunk Enterprise installation, go to the following URLs:
-* `hello_templates`- [https://localhost:8089/servicesNS/-/hello-world/hello-templates/say-hello-templates](https://localhost:8089/servicesNS/-/hello-world/hello-templates/say-hello-templates)
-* `hello_world`- [https://localhost:8089/servicesNS/-/hello-world/say-hello](https://localhost:8089/servicesNS/-/hello-world/say-hello)
+* `hello_templates`- [https://localhost:8089/servicesNS/-/mqtt-async/hello-templates/say-hello-templates](https://localhost:8089/servicesNS/-/mqtt-async/hello-templates/say-hello-templates)
+* `hello_world`- [https://localhost:8089/servicesNS/-/mqtt-async/say-hello](https://localhost:8089/servicesNS/-/mqtt-async/say-hello)
 
 ## Support
 
