@@ -1,6 +1,7 @@
 ConfigParser
 dataclasses
 paho-mqtt
+pre-commit
 python-dotenv
 requests
 schedule
