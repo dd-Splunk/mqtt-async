@@ -39,3 +39,10 @@ repos:
           - --in-place
           - --remove-unused-variables
           - --remove-all-unused-imports
+-   repo: https://github.com/PyCQA/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+        args:
+          - --max-line-length=100
+          - --extend-ignore=E203
