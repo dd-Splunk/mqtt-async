@@ -13,8 +13,8 @@ init:
 	pre-commit install
 
 .env:
-	echo "Create .env from template"
-	SPL_A=$(C_DIR)  envsubst < tpl.env | op inject -f > .env
+	echo "Create @$ from template"
+	SPL_A=$(C_DIR)  envsubst < tpl.env | op inject -f > $@ && chmod 600 $@
 
 env: .env
 
