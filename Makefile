@@ -30,6 +30,7 @@ down:
 clean:
 	echo "Powering down and removing volumes"
 	docker compose down -v
+	rm -f .env
 
 spl:
 	echo "Downloading latest app version from container"
