@@ -6,6 +6,7 @@ services:
     #   splunknet:
     image: splunk/splunk:${SPLUNK_IMAGE:-latest}
     container_name: so1
+    platform: linux/amd64
     environment:
       - SPLUNK_START_ARGS=--accept-license
       - SPLUNK_APPS_URL=https://github.com/dd-Splunk/${SPLUNK_APP}/releases/download/latest/${SPLUNK_APP}.spl,https://splunkbase.splunk.com/app/1924/release/8.0.1/download,https://splunkbase.splunk.com/app/4353/release/1.7.15/download
