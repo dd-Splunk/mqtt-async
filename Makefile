@@ -1,4 +1,5 @@
 .SILENT:
+BUILD = .
 SHELL = bash
 C_DIR := $(lastword $(subst /, ,$(CURDIR)))
 
@@ -37,3 +38,5 @@ spl:
 token:
 	echo "Creating Admin token"
 	./token.sh
+
+.PHONY: init up down clean spl token
