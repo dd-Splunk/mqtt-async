@@ -102,7 +102,6 @@ def hec_post(topic: Topic, payload: Payload) -> Status:
 
 
 def main():
-
     client = mqtt.Client("Send2HEC")
     client.on_connect = on_connect
     client.on_message = on_message

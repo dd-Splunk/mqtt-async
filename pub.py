@@ -24,7 +24,6 @@ sensors = ["air.temperature", "air.humidity", "air.pressure"]
 
 
 def pub(client):
-
     _sensor_number = random.randint(0, 9)
     _sensor_path = f"Things/{board_id}/dht11-{_sensor_number}/"
     _sensors = sensors
@@ -38,7 +37,6 @@ def pub(client):
 
 
 def main():
-
     client = mqtt.Client("Pub")
 
     try:
