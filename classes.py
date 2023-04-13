@@ -6,6 +6,8 @@ from dataclasses import dataclass, field
 
 @dataclass
 class NetObject:
+    """Common elements for both Broker and HecAPI classes"""
+
     host: str = field(default="localhost")
 
     def config(self, config_file="mqtt.conf") -> None:
