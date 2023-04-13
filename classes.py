@@ -45,9 +45,11 @@ class HecAPI(NetObject):
     port: int = field(default=8088)
     token: str = field(default="00000000-0000-0000-0000-000000000000")
 
+    @property
     def url(self) -> str:
         return f"https://{self.host}:{self.port}/services/collector"
 
+    @property
     def authHeader(self):
         return {"Authorization": f"Splunk {self.token}"}
 
@@ -60,6 +62,7 @@ class Metric:
     payload: str = field(default="0.0")
     sourcetype: str = field(default="mqtt_metric")
 
+    @property
     def post_data(self):
         """Create JSON expected by Splunk HEC for metrics
         The expected topic structure is the following
